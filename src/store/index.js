@@ -1,14 +1,16 @@
-import { createStore } from 'vuex'
+// import usersModule from "@/store/administration/users/index";
+// import teamsModule from "@/store/administration/teams/index";
 
-export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+// export default {
+//   namespaced: true,
+//   state() {
+//     return {};
+//   },
+//   mutations: {},
+//   actions: {},
+//   getters: {},
+//   modules: {
+//     users: usersModule,
+//     teams: teamsModule
+//   }
+// };
