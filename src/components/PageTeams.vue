@@ -51,14 +51,16 @@
               <h4 class="mt-4">Assign Permissions</h4>
 
               <div class="col-4 col-md-2">
-                <div class="input-group-text">
+                <div class="input-group-text" v-for="permission in permissions" :key="permission.id">
                   <input
                     class="form-check-input mt-0"
                     type="checkbox"
-                    value=""
+                    :value="permission.name"
+                    :id="permission.id"
+                    v-model="teamList.allowedPermissions"
                     aria-label="Checkbox for following text input"
                   />
-                  <label for="permission">Permission 1</label>
+                  <label :for="permission.id">{{permission.name}}Permission 1</label>
                 </div>
               </div>
               <div class="col-4 col-md-2">
@@ -147,7 +149,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("administration/teams", ["teamsList"]),
+    ...mapState("administration/teams", ["teamsList", "permissions"]),
   },
   methods: {
     ...mapActions("administration/teams", ["loadTeams"]),

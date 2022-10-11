@@ -3,7 +3,19 @@ export default {
   namespaced: true,
   state() {
     return {
-      teamsList: [],
+      teamsList: [
+        {
+          allowedPermissions:[]
+        }
+      ],
+      permissions:[
+        {name: 'permission 1'},
+        {name: 'permission 2'},
+        {name: 'permission 3'},
+        {name: 'permission 4'},
+
+
+      ]
     };
   },
   actions: {
