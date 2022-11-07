@@ -8,9 +8,15 @@ export default {
   namespaced: true,
   state() {
     return {
-      usersList: [],
+      usersList: [
+        {
+          teamSelected:[]
+        }
+      ],
       currentUser: {},
       totalNumberOfUsers: 0,
+     
+
     };
   },
   
@@ -61,12 +67,14 @@ export default {
           .catch((error) => reject(error));
       });
     },
-    loadNumberOfUsers(context, data) {
+   
+    loadUsers(context, data) {
       return new Promise((resolve, reject) => {
         axiosService({ requiresAuth: true })
-          .get("/users/count", {
+          .get("/administration/users/", {
             params: {
               name: data?.name,
+              email: data?.email,
               team: data?.team,
             },
           })
@@ -79,10 +87,19 @@ export default {
           });
       });
     },
-    loadUsers(context, data) {
+    loadNumberOfUsers(context, data) {
       return new Promise((resolve, reject) => {
         axiosService({ requiresAuth: true })
+<<<<<<< HEAD
           .get("/administration/users/")
+=======
+          .get("/administration/users/count", {
+            params: {
+              name: data?.name,
+              team: data?.team,
+            },
+          })
+>>>>>>> 5680d8ae5c95d73c446a8bc93c0dd1a2646af8aa
           .then((response) => {
             context.commit(types.UPDATE_USER_LIST_ITEMS, response.data);
             resolve(response);
@@ -100,5 +117,8 @@ export default {
     totalNumberOfUsers(state) {
       return state.totalNumberOfUsers;
     },
+    currentUser(state){
+      return state.currentUser
+    }
   },
 };

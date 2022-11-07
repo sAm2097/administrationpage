@@ -1,29 +1,111 @@
 /* eslint-disable */
 <template>
-  
+  <!-- <transition duration="550" name="nested"> -->
+  <div class="container-fluid p-0">
+    <h1>Create New User</h1>
+    <div class="container mt-5 mb-5">
+      <div class="card mb-3">
+        <!-- navigation buttons Edit,delete and save -->
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs d-flex">
+            <li class="nav-item"></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <button type="button" class="btn btn-primary">Edit User</button>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <button type="button" class="btn btn-danger">
+                  Delete User
+                </button>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="row m-3">
+          <div class="col">
+            <form class="row g-2">
+              <div class="col-12 col-md-6">
+                <div class="form-floating">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="User name"
+                    id="inputUserName"
+                  />
+                  <label for="inputUserName">User Name</label>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="form-floating">
+                  <input
+                    class="form-control"
+                    type="Email"
+                    placeholder="Email"
+                    id="inputEmail"
+                  />
+                  <label for="inputEmail">Email</label>
+                </div>
+              </div>
 
-  <div class="list-group border-0 mt-2">
-    <base-rich-list-item
-      v-for="user in usersList"
-      :key="user.id"
-      :id="user.id"
-      :selected="user.selected"
-      :main-text="user.userName"
-      :muted-text="user.userEmail"
-     
-      @item-long-press="selectable ? (user.selected = true) : ''"
-      @item-click="onTeamClicked(user)"
-    />
-  </div>
-
+              <h4 class="mt-4">Assign Team</h4>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="team">Team 1</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="team">Team 2</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="team">Team 3</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="team">Team 4</label>
+                </div>
+              </div>
+              <!-- <div class="input-group mb-3 mt-3">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input type="checkbox" aria-label="Checkbox for following text input">
+                    </div>
+                  </div>
+                </div> -->
 
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
-
-import BaseRichListItem from "@/components/ui/BaseRichListItem";
-
+import { mapActions } from "vuex";
 
 export default {
   name: "PageUsers",
@@ -33,61 +115,13 @@ export default {
   },
   data() {
     return {
+      usersList: [],
       isLoading: false,
-      expandFilter: false,
-
-      userId: null,
     };
   },
-  computed: {
-    ...mapState("administration/teams", ["teamsList"]),
-    ...mapState("administration/users", [
-      "usersList",
-      "teams",
-      "currentUser",
-      "totalNumberOfUsers",
-    ]),
-    userName: {
-      set(value) {
-        this.currentUser.name = value;
-      },
-      get() {
-        if (this.currentUser) {
-          return this.currentUser.name;
-        } else {
-          return "";
-        }
-      },
-    },
-    email: {
-      set(value) {
-        this.currentUser.email = value;
-      },
-      get() {
-        if (this.currentUser) {
-          return this.currentUser.email;
-        } else {
-          return "";
-        }
-      },
-    },
-  },
+  computed: {},
   methods: {
-    ...mapActions("administration/users", [
-      "loadUsers",
-      "addUsers",
-      "loadNumberOfUsers",
-    ]),
-
-    ...mapActions("administration/teams", ["loadTeams"]),
-    submitUser() {
-      this.addUsers(this.currentUser).then(() => {
-        this.$router.push("/administration/users");
-      });
-    },
-
-
-   
+    ...mapActions("administration/users", ["loadUsers"]),
   },
   mounted() {
     // this.loadUsers()

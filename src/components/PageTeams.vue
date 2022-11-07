@@ -1,4 +1,4 @@
-/*eslint-disable*/
+/*eslint-disable*/ 
 <template>
 
   <!-- <transition duration="550" name="nested"> -->
@@ -26,58 +26,80 @@
         </div>
         <div class="row m-3">
           <div class="col">
-            <form class="row g-2" @submit.prevent="">
+            <form class="row g-2">
               <div class="col-12 col-md-6">
                 <div class="form-floating">
                   <input
-                    v-model="teamName"
                     class="form-control"
                     type="text"
                     placeholder="User name"
                     id="inputUserName"
-                    autocomplete="off"
                   />
                   <label for="inputUserName">Team Name</label>
                 </div>
               </div>
+              <div class="col-12 col-md-6">
+                <div class="form-floating">
+                  <input
+                    class="form-control"
+                    type="text"
+                    placeholder="Team Id"
+                    id="teamId"
+                  />
+                  <label for="teamId">Team ID</label>
+                </div>
+              </div>
+              <h4 class="mt-4">Assign Permissions</h4>
 
-              <div class="card-body">
-                <h5
-                  class="card-title cursor-pointer"
-                  @click="$refs.collapseFilter.toggle()"
-                >
-                  Assign Permissions
-                  <i class="bi bi-filter" />
-                </h5>
-                <bs-collapse
-                  id="collapseFilter"
-                  ref="collapseFilter"
-                  :show="expandFilter"
-                  @close="expandFilter = false"
-                >
-                  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
-                    <ul v-for="permission in permissions" :key="permission.id">
-                      <input
-                        class="form-check-input mt-0"
-                        type="checkbox"
-                        :id="permission.id"
-                        :value="{permissionType:permission.id}"
-                        v-model="allowedPermissions"
-                        aria-label="Checkbox for following text input"
-                      />
-                      <label class="ms-2" :for="permission.id">
-                        {{ permission.name.toLowerCase() }}
-                      </label>
-                    </ul>
-                  </div>
-                </bs-collapse>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="permission">Permission 1</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="permission">Permission 2</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="permission">Permission 3</label>
+                </div>
+              </div>
+              <div class="col-4 col-md-2">
+                <div class="input-group-text">
+                  <input
+                    class="form-check-input mt-0"
+                    type="checkbox"
+                    value=""
+                    aria-label="Checkbox for following text input"
+                  />
+                  <label for="permission">Permission 4</label>
+                </div>
               </div>
 
               <input
                 type="submit"
-                class="btn btn-success mt-2"
+                class="btn btn-success mt-4"
                 value="Create Team"
-                @click="submitTeam"
               />
             </form>
           </div>
@@ -92,31 +114,24 @@
       :key="team.id"
       :id="team.id"
       :selected="team.selected"
-      :main-text="team.teamName"
+      :main-text="team.name"
       :muted-text="team.teamId"
     
       @item-long-press="selectable ? (team.selected = true) : ''"
       @item-click="onTeamClicked(team)"
     />
   </div>
-
-  <div class="" v-show="!isLoading">
-    <base-pagination class="d-flex justify-content-center mt-2" />
-  </div>
 </template>
+
 
 <script>
 import { mapState, mapActions } from "vuex";
 import BaseRichListItem from "@/components/ui/BaseRichListItem";
-
-import BsCollapse from "@/components/ui/BsCollapse";
-import BasePagination from "@/components/ui/BasePagination";
-
-
+import { calculateDatePrecisionOptions } from "@/renderFunctions";
 
 export default {
   name: "PageTeams",
-  components: { BaseRichListItem, BsCollapse, BasePagination },
+  components: { BaseRichListItem },
 
   props: {
     selectable: {
@@ -130,65 +145,37 @@ export default {
     return {
       isLoading: false,
       expandFilter: false,
-      teamName: "",
-      // id:uuid(),
-      allowedPermissions: [],
-      errorMessage: null,
-    
-
     };
     
   },
   computed: {
-    
-    ...mapState("administration/teams", ["teamsList", "permissions"])
+    ...mapState("administration/teams", ["teamsList"]),
   },
   methods: {
-    
-    ...mapActions("administration/teams", ["loadTeams", "addTeam"]),
+    ...mapActions("administration/teams", ["loadTeams"]),
 
-    submitTeam() {
-
-      this.addTeam({
-        // id:this.id,
-        teamName: this.teamName,
-        permissions: this.allowedPermissions
-      })
-        .then(() => {
-       
-
-          this.teamName = "";
-          this.allowedPermissions = [];
-          this.errorMessage = null;
-          console.log("submitSuccess");
-          this.$emit("submitSuccess");
-        })
-        .catch(e => {
-          console.log("submitError");
-          this.$emit("submitError");
-          this.errorMessage = e;
-          console.log(e);
-        });
+    convertPrettyCreationDate(creationTime) {
+      //const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+      const options = calculateDatePrecisionOptions(new Date(creationTime));
+      return new Date(creationTime).toLocaleString(this.$i18n.locale, options);
     },
-
-   
   },
   watch: {
     submit(n) {
       if (n) {
         this.submitTeam();
       }
-    }
+    },
   },
   created() {
-    this.loadTeams()
-      .then(response => {
-        this.teamsList = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    // this.loadTeams()
+    //   .then((response) => {
+    //     this.teamsList = response.data;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  },
 };
 </script>
 
