@@ -1,9 +1,11 @@
 <template>
+<div>
   <nav>
     <router-link to="/">Teams</router-link> |
     <router-link to="/users">Users</router-link>
   </nav>
   <router-view/>
+</div>
 </template>
 
 <style>

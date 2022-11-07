@@ -19,6 +19,10 @@ export default {
     [types.ADD_USER](state, payload) {
       state.usersList.push(payload);
     },
+    [types.UPDATE_USER_LIST_ITEMS](state,payload){
+      state.usersList.push(...payload)
+      // console.log("mutations",usersList);
+      },
 
     [types.UPDATE_USERS](state, payload) {
       const usersList = [];
@@ -78,15 +82,9 @@ export default {
     loadUsers(context, data) {
       return new Promise((resolve, reject) => {
         axiosService({ requiresAuth: true })
-          .get("/administration/users/", {
-            params: {
-              name: data?.name,
-              email: data?.email,
-              team: data?.team,
-            },
-          })
+          .get("/administration/users/")
           .then((response) => {
-            context.commit(types.UPDATE_TOTAL_NUMBER_OF_USERS, response.data);
+            context.commit(types.UPDATE_USER_LIST_ITEMS, response.data);
             resolve(response);
           })
           .catch((error) => {
